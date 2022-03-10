@@ -1,21 +1,19 @@
-cmake_minimum_required(VERSION 3.21)
-
-set(ProjectTestName ExampleTests)
+set(ProjectTest ${CMAKE_PROJECT_NAME}_Tests)
 
 set(Sources
     ExampleTests.cpp
 )
 
-add_executable(${ProjectTestName} ${Sources})
+add_executable(${ProjectTest} ${Sources})
 
 target_link_libraries(
-    ${ProjectTestName}
+    ${ProjectTest}
     PUBLIC ${CMAKE_PROJECT_NAME}_lib
     gtest_main
 )
 
 add_test(
-    NAME ${ProjectTestName}
-    COMMAND ${ProjectTestName}
+    NAME ${ProjectTest}
+    COMMAND ${ProjectTest}
 )
 

@@ -29,6 +29,9 @@ include_directories(
 # specifying the directory where all the sources are located.
 add_subdirectory(
     src
+    )
+
+add_subdirectory(
     test
     )
 
@@ -59,5 +62,5 @@ endif()
 
 # adding the googletest library separately as including the subdirectory with the previous command did not work!
 add_subdirectory(
-    extLibs/googletest
+    extLibs/googletest EXCLUDE_FROM_ALL
     )

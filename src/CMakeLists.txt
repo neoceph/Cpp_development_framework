@@ -1,4 +1,4 @@
-set(Project AM-CFD_lib) # setting the library name
+set(Project ${CMAKE_PROJECT_NAME}_lib) # setting the library name
 
 # specifying the project name
 project(${Project})

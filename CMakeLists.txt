@@ -64,3 +64,18 @@ endif()
 add_subdirectory(
     extLibs/googletest EXCLUDE_FROM_ALL
     )
+
+
+include(InstallRequiredSystemLibraries)
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")
+set(CPACK_PACKAGE_VERSION_MAJOR "1")
+set(CPACK_PACKAGE_VERSION_MINOR "1")
+
+install(TARGETS ${Project})
+
+#set(CPACK_GENERATOR "DEB")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Abdullah") # required
+
+message(STATUS "Project Name: ${Project}") # printing a test message with the variable name of the project
+
+include(CPack)

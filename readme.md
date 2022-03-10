@@ -8,5 +8,5 @@
     - change to build directory with `cd build`
     - copy the configure.sh to build directory with `cp ../configure.sh .`
     - execute configure .sh with `./configure.sh`. You may need to change executable permission with `chmod +x configure.sh`
-    - compile the code `make -j $(nproc)`. The  '$(nproc)' part of the code identifies the number of cpus and use all of them to compile the code.
-2. From within the build directory issue `cpack` command to create installer. ALl the .sh, .tar.gz, and .tar.Z files are the installer in different format.
+    - compile the code `make -j $(nproc)`. The  `$(nproc)` part of the code identifies the number of cpus and use all of them to compile the code.
+2. From within the build directory issue `cpack` command to create installer. All the .sh, .tar.gz, and .tar.Z files are the installer in different format.

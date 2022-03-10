@@ -4,4 +4,4 @@
 
 ## Packing installer
 - build the code 
-- go to the build directory and issue "CPack" command
+- go to the build directory and issue "cpack" command

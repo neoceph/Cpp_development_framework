@@ -14,7 +14,7 @@
 ## Changing the name of the project
 - Project name needs to be changed in two places
     1. Line #3 of the root directory CMakeLists.txt file `set(Project Project-Name)`. The 'Project-Name' can be changed to any appropriate name.
-    2. Line #35 `PROJECT_NAME = "AM-CFD"` of the [Doxyfile.in](https://github.com/neoceph/Cpp_development_framework/tree/main/documentation/Doxyfile.in) located in the *./documentation* directory. 
+    2. Line #35 `PROJECT_NAME = "AM-CFD"` of the [Doxyfile.in](./documentation/Doxyfile.in) located in the *./documentation* directory. 
 
 ## Requirements
     - Doxygen 1.9.4

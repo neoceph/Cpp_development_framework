@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 set(Project AM-CFD)
-set(ProjectLib AM-CFD_lib)
+set(ProjectLib ${Project}_lib)
 
 project(${Project} C CXX)
 
@@ -16,6 +16,7 @@ if (OPENMP_FOUND)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
+include(CTest)
 enable_testing()
 
 # generating executable program by specifying the location of the file
@@ -59,6 +60,9 @@ endif()
 if(NOT EXISTS "${PROJECT_SOURCE_DIR}/extLibs/googletest/CMakeLists.txt")
     message(FATAL_ERROR "The googletest submodules was not downloaded! GIT_SUBMODULE is either turned off or failed. Please update submodules")
 endif()
+
+
+
 
 # adding the googletest library separately as including the subdirectory with the previous command did not work!
 add_subdirectory(

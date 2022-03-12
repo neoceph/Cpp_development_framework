@@ -26,6 +26,8 @@ add_executable(${Project} src/main.cpp)
 include_directories(
     ${ProjectLib} "${CMAKE_SOURCE_DIR}/src/headers"
     )
+# setting the directory of the source for doxygen   
+set(PROJECT_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/src")
 
 # specifying the directory where all the sources are located.
 add_subdirectory(
@@ -61,6 +63,29 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/extLibs/googletest/CMakeLists.txt")
     message(FATAL_ERROR "The googletest submodules was not downloaded! GIT_SUBMODULE is either turned off or failed. Please update submodules")
 endif()
 
+# setting up doxygen
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+    # set input and output files
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/documentation/Doxyfile.in)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.out)
+
+    message(${CMAKE_CURRENT_SOURCE_DIR}/documentation/Doxyfile.in)
+    message(${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT})
+    # request to configure the file
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    message("Doxygen build started")
+
+    # Note: do not put "ALL" - this builds docs together with application EVERY TIME!
+    add_custom_target( docs
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        VERBATIM )
+
+else (DOXYGEN_FOUND)
+    message("Doxygen need to be installed to generate the doxygen documentation!")
+endif (DOXYGEN_FOUND)
 
 
 

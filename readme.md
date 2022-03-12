@@ -18,4 +18,4 @@
 
 ## Requirements
     - Doxygen 1.9.4
-    
+    - Sphinx

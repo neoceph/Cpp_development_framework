@@ -1,5 +1,5 @@
 # Ignoring CMake artifact files
 build/
-
+doc/html
 # Log files
 *.log

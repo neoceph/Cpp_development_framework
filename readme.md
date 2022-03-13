@@ -19,6 +19,14 @@
 ## Requirements
     - Doxygen 1.9.4
     - Sphinx 4.4.0
-    - doxyrest
-        - Clang 6.0.0 required for installing doxyrest from source
+    - Latexmk (required for pdf generation)
+        - if not available can be installed with `sudo apt-get update -y` and next `sudo apt-get install -y latexmk`
+        - for .sty file not found use `apt install texlive-latex-extra`
+
+## generating documentation
+    - Under the build directory after a successful build `make docs` will generate api documentation under doc/api directory
+        - in the doc/api/latex/ directory issuing `make pdf` will generate pdf from the generated latex files
+    - Under the doc/readthedocs directory issuing `make html` will generate html documentation under doc/readthedocs/_build/html directory
+    - `make latexpdf` will generate pdf documentation under doc/readthedocs/_build/latex directory
+
     

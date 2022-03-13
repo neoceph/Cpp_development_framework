@@ -1,5 +1,5 @@
 .. AM-CFD documentation master file, created by
-   sphinx-quickstart on Sat Mar 12 10:07:48 2022.
+   sphinx-quickstart on Sun Mar 13 03:15:09 2022.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
@@ -18,11 +18,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-
-Table of Contents
-^^^^^^^^^^^^^^^^^
-.. toctree::
-   :glob:
-
-   api/*

@@ -2,8 +2,8 @@
 build/
 doc/html
 doc/xml
-doc/readthedocs/_build
-doc/readthedocs/_static
+doc/readthedocs/_build/*
+doc/readthedocs/_static/
 doc/readthedocs/_templates
 # Log files
 *.log

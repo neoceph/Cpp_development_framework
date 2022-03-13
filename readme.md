@@ -18,4 +18,7 @@
 
 ## Requirements
     - Doxygen 1.9.4
-    - Sphinx
+    - Sphinx 4.4.0
+    - doxyrest
+        - Clang 6.0.0 required for installing doxyrest from source
+    

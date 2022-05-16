@@ -150,6 +150,7 @@ set(source_files "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 # generating executable program by specifying the location of the file
 add_executable(${Project} src/main.cpp ${version_file})
 
+target_link_libraries(${Project} ${ProjectLib})
 
 include(InstallRequiredSystemLibraries)
 install(TARGETS ${Project})

@@ -5,6 +5,8 @@
 
 Welcome to AM-CFD's documentation!
 ==================================
+AM-CFD is a finite volume based laser powder based fusion computational analysis tool. In the current version AM-CFD
+is solving Navier-Stokes equation and Energy equation to calculate the temperature distribution, solid fraction, melt pool etc for a given spot and scan laser.
 
 .. toctree::
    :maxdepth: 2
@@ -12,7 +14,7 @@ Welcome to AM-CFD's documentation!
 
 
 
-Indices and tables
+Getting Started
 ==================
 
 * :ref:`genindex`

@@ -63,6 +63,8 @@ endif()
 # setting up doxygen
 find_package(Doxygen)
 if (DOXYGEN_FOUND)
+    # creating a /build/doc directory for generating doxyfile outputs in the separate build directory
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/latex)
     # set input and output files
     set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile)
     set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.out)
@@ -74,11 +76,23 @@ if (DOXYGEN_FOUND)
     message("Doxygen build started")
 
     # Note: do not put "ALL" - this builds docs together with application EVERY TIME!
-    add_custom_target( docs
+    add_custom_target(docs
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Generating API documentation with Doxygen"
         VERBATIM )
+
+    message("Doxygen Document generation started")
+    add_custom_target(BuildingDocs ALL 
+        COMMAND make docs
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        )
+
+    # message("Doxygen PDF generation started")
+    # add_custom_target(GeneratePDF ALL
+    #     COMMAND "./doc/latex/make pdf"
+    #     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    #     )
 
 else (DOXYGEN_FOUND)
     message("Doxygen need to be installed to generate the doxygen documentation!")

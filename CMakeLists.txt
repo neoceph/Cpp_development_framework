@@ -60,6 +60,17 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/extLibs/googletest/CMakeLists.txt")
     message(FATAL_ERROR "The googletest submodules was not downloaded! GIT_SUBMODULE is either turned off or failed. Please update submodules")
 endif()
 
+# setting up sphinx-build with readthedocs theme
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/readthedocs)    
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/doc/readthedocs/conf.py ${CMAKE_CURRENT_BINARY_DIR}/doc/readthedocs/conf.py
+    COPYONLY
+    )
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/doc/readthedocs/index.rst ${CMAKE_CURRENT_BINARY_DIR}/doc/readthedocs/index.rst
+    COPYONLY
+    )
+
 # setting up doxygen
 find_package(Doxygen)
 if (DOXYGEN_FOUND)

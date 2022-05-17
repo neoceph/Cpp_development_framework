@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = '${ProjectLib}'
+project = 'AM-CFD'
 copyright = '2022, Abdullah Al Amin'
 author = 'Abdullah Al Amin'
 

@@ -76,23 +76,30 @@ if (DOXYGEN_FOUND)
     message("Doxygen build started")
 
     # Note: do not put "ALL" - this builds docs together with application EVERY TIME!
-    add_custom_target(docs
+    add_custom_target(
+        docs
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Generating API documentation with Doxygen"
-        VERBATIM )
-
-    message("Doxygen Document generation started")
-    add_custom_target(BuildingDocs ALL 
-        COMMAND make docs
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        VERBATIM
         )
 
-    # message("Doxygen PDF generation started")
-    # add_custom_target(GeneratePDF ALL
-    #     COMMAND "./doc/latex/make pdf"
-    #     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    #     )
+    message("Doxygen Document generation started")
+    add_custom_command(
+        OUTPUT refman.tex
+        COMMAND make docs
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        VERBATIM
+        )
+
+    message("Doxygen PDF generation started")
+    add_custom_target(
+        BuildPDF ALL
+        COMMAND make pdf
+        DEPENDS refman.tex
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/latex
+        )
+
 
 else (DOXYGEN_FOUND)
     message("Doxygen need to be installed to generate the doxygen documentation!")

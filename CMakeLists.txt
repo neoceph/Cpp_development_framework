@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.21)
 
-set(Project AM-CFD)
+# Read the JSON file.
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/CMakeSetup.json CMakeSetup_STRING)
+
+string(JSON Project_NAME GET ${CMakeSetup_STRING} 0 ProjectName)
+string(JSON Project_DEVELOPER GET ${CMakeSetup_STRING} 0 Developer)
+
+set(Project ${Project_NAME})
 set(ProjectLib ${Project}_lib)
 
 project(${Project} C CXX)

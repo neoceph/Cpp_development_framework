@@ -203,8 +203,13 @@ add_executable(${Project} src/main.cpp ${version_file})
 
 target_link_libraries(${Project} ${ProjectLib})
 
+string(TOLOWER ${Project_NAME} User_Guide)
 include(InstallRequiredSystemLibraries)
 install(TARGETS ${Project})
+install(DIRECTORY ${PROJECT_BINARY_DIR}/doc/api/html DESTINATION help/api)
+install(DIRECTORY ${PROJECT_BINARY_DIR}/doc/usermanual/documentation/html DESTINATION help/manual)
+install(FILES ${PROJECT_BINARY_DIR}/doc/api/latex/refman.pdf DESTINATION help/api RENAME "Api Documentation.pdf")
+install(FILES ${PROJECT_BINARY_DIR}/doc/usermanual/documentation/latex/${User_Guide}.pdf DESTINATION help/manual RENAME "User Guide.pdf")
 
 # #set(CPACK_GENERATOR "DEB")
 # set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Abdullah") # required

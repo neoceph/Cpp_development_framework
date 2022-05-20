@@ -16,3 +16,5 @@ add_library(
     ${SOURCES} # 
     ${HEADERS}
     )
+
+install(TARGETS ${SubProject} DESTINATION lib)

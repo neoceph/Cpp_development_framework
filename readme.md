@@ -20,9 +20,9 @@
     - For .sty file not found use `apt install texlive-latex-extra`
 ## Packing installer
 1. Assigning a git tag is easy 
-    - `git tag -a v1.0.3 -m 'Version 1.0.3 - Feature 1`
-    - `git tag` lists all the available tags
-    - Check other `git tag` details [here](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
+    - `git tag -a v1.0.3 -m 'Version 1.0.3 - Feature 1'`
+    - `git tag` lists all the available tags.
+    - Check other `git tag` details [here].(https://git-scm.com/book/en/v2/Git-Basics-Tagging)
 2. Build the code 
     - create a directory named 'build' with `mkdir build`
     - change to build directory with `cd build`

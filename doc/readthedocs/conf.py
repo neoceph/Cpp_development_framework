@@ -13,13 +13,21 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
+import json
+from datetime import datetime
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'AM-CFD'
-copyright = '2022, Abdullah Al Amin'
-author = 'Abdullah Al Amin'
+with open("../../CMakeSetup.json", "r") as jsonfile:
+    data = json.load(jsonfile)
+
+
+currentYear = datetime.now().year
+
+project = data[0]['ProjectName']
+copyright = data[0]['StartYear'] + "-" + str(currentYear) + "," + data[0]['Developer']
+author = data[0]['Developer']
 
 
 # -- General configuration ---------------------------------------------------

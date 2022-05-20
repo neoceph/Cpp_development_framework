@@ -1,7 +1,23 @@
 # A comprehensive framework for C++ development
-- This CMake structure includes googletest as an external library using git submodule and organizes unittests in a separate executable
-- Organizes codes on a separate src directory where headers and sources have corresponding headers and sources directory
+- This CMake structure includes googletest as an external library using git submodule and organizes unittests in a separate executable.
+- Organizes codes on a separate src directory where headers and sources have corresponding headers and sources directory.
+- Developed on Ubuntu 18.04
 
+## Requirements
+- CMake 3.21 or above
+- Doxygen 1.9.4 and above
+    `sudo apt update`
+    `sudo apt install doxygen`
+- Sphinx 4.4.0 and above
+    `sudo apt-get install python3-sphinx`
+- Sphinx readthedocs theme
+    `pip3 install sphinx_rtd_theme`
+- Breathe
+    `pip3 install breathe`
+    `pip3 install sphinx-sitemap`
+- Latexmk (required for pdf generation)
+    - If not available can be installed with `sudo apt-get update -y` and next `sudo apt-get install -y latexmk`
+    - For .sty file not found use `apt install texlive-latex-extra`
 ## Packing installer
 1. Assigning a git tag is easy 
     - `git tag -a v1.0.3 -m 'Version 1.0.3 - Feature 1`
@@ -19,13 +35,6 @@
 - Project name needs to be changed in two places
     1. Line #3 of the root directory CMakeLists.txt file `set(Project Project-Name)`. The 'Project-Name' can be changed to any appropriate name.
     2. Line #35 `PROJECT_NAME = "AM-CFD"` of the [Doxyfile.in](./documentation/Doxyfile.in) located in the *./documentation* directory. 
-
-## Requirements
-- Doxygen 1.9.4
-- Sphinx 4.4.0
-- Latexmk (required for pdf generation)
-    - if not available can be installed with `sudo apt-get update -y` and next `sudo apt-get install -y latexmk`
-    - for .sty file not found use `apt install texlive-latex-extra`
 
 ## Generating documentation
 - Under the build directory after a successful build `make docs` will generate api documentation under doc/api directory

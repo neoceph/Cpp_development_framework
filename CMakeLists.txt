@@ -67,21 +67,37 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/extLibs/googletest/CMakeLists.txt")
 endif()
 
 # setting up sphinx-build with readthedocs theme
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/readthedocs)    
+
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/usermanual)    
 configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/doc/readthedocs/conf.py ${CMAKE_CURRENT_BINARY_DIR}/doc/readthedocs/conf.py
+    ${CMAKE_CURRENT_SOURCE_DIR}/CMakeSetup.json ${CMAKE_CURRENT_BINARY_DIR}/CMakeSetup.json
     COPYONLY
     )
-configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/doc/readthedocs/index.rst ${CMAKE_CURRENT_BINARY_DIR}/doc/readthedocs/index.rst
-    COPYONLY
+
+message("Copy Sphinx setup files")
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/doc/readthedocs/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/doc/usermanual/)
+
+message("Sphinx Document generation started")
+add_custom_command(
+    OUTPUT ../html/index.html
+    COMMAND make html
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/usermanual
+    VERBATIM
+    )
+
+message("Sphinx PDF documentation generation started")
+add_custom_target(
+    HTML_MANUAL ALL
+    COMMAND make latexpdf
+    DEPENDS ../html/index.html
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/usermanual
     )
 
 # setting up doxygen
 find_package(Doxygen)
 if (DOXYGEN_FOUND)
     # creating a /build/doc directory for generating doxyfile outputs in the separate build directory
-    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/latex)
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/api/latex)
     # set input and output files
     set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile)
     set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.out)
@@ -111,10 +127,10 @@ if (DOXYGEN_FOUND)
 
     message("Doxygen PDF generation started")
     add_custom_target(
-        BuildPDF ALL
+        API_PDF ALL
         COMMAND make pdf
         DEPENDS refman.tex
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/latex
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/api/latex
         )
 
 

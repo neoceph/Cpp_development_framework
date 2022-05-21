@@ -30,6 +30,7 @@
     - execute configure .sh with `./configure.sh`. You may need to change executable permission with `chmod +x configure.sh`
     - compile the code `make -j $(nproc)`. The  `$(nproc)` part of the code identifies the number of cpus and use all of them to compile the code.
 3. From within the build directory issue `cpack` command to create installer. All the .sh, .tar.gz, and .tar.Z files are the installer in different format.
+4. Creating rpm will require an rpmbuild executable. To get rpm installed issue `sudo apt-get install rpm`
 
 ## Changing the name of the project
 - Project name needs to be changed in two places

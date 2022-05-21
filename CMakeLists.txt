@@ -184,8 +184,6 @@ set(CPACK_INSTALL_COMMANDS "${CMAKE_COMMAND} -E make_directory \
 # Exclude the build and .git directory from the source package.
 set(CPACK_SOURCE_IGNORE_FILES "${PROJECT_SOURCE_DIR}/.git/;${PROJECT_BINARY_DIR}/;${CPACK_SOURCE_IGNORE_FILES}")
 
-include (CPack)
-
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/version.cpp.in
                 ${CMAKE_CURRENT_BINARY_DIR}/version.cpp)
@@ -211,6 +209,12 @@ install(DIRECTORY ${PROJECT_BINARY_DIR}/doc/usermanual/documentation/html DESTIN
 install(FILES ${PROJECT_BINARY_DIR}/doc/api/latex/refman.pdf DESTINATION help/api RENAME "Api Documentation.pdf")
 install(FILES ${PROJECT_BINARY_DIR}/doc/usermanual/documentation/latex/${User_Guide}.pdf DESTINATION help/manual RENAME "User Guide.pdf")
 
-# #set(CPACK_GENERATOR "DEB")
-# set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Abdullah") # required
-
+string(TIMESTAMP YEAR_MONTH "%Y_%m")
+set(CPACK_GENERATOR "RPM")
+set(CPACK_PACKAGE_NAME ${Project})
+set(CPACK_PACKAGE_RELEASE ${YEAR_MONTH})
+set(CPACK_PACKAGE_CONTACT ${Project_DEVELOPER})
+set(CPACK_PACKAGE_VENDOR "My Company")
+set(CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${VERSION_SHORT}-${CPACK_PACKAGE_RELEASE}.${CMAKE_SYSTEM_PROCESSOR}")
+include(CPack)

@@ -18,6 +18,10 @@
 - Latexmk (required for pdf generation)
     - If not available can be installed with `sudo apt-get update -y` and next `sudo apt-get install -y latexmk`
     - For .sty file not found use `apt install texlive-latex-extra`
+- Rpmbuild (required for .rpm package generation) 
+    - Creating rpm will require an rpmbuild executable. To get rpm installed issue `sudo apt-get install rpm`
+- NSIS 3.0 and up (required for windows installer package generation)
+    - Creating NSIS will require an nsis executable. In Ubuntu-10=8.04 nsis installer through .deb might be required. The installation file could be found [here](http://ftp.de.debian.org/debian/pool/main/n/nsis/nsis-common_3.08-2_all.deb). It might also require a dependency on nsis-common which can be downloaded from [here](http://ftp.de.debian.org/debian/pool/main/n/nsis/nsis-common_3.08-2_all.deb). The debian packages are searched and found on the website [here](https://debian.pkgs.org/). Installation of .deb package is done using the command `sudo dpkg -i DEB_PACKAGE_NAME`
 ## Packing installer
 1. Assigning a git tag is easy 
     - `git tag -a v1.0.3 -m 'Version 1.0.3 - Feature 1'`
@@ -30,8 +34,6 @@
     - execute configure .sh with `./configure.sh`. You may need to change executable permission with `chmod +x configure.sh`
     - compile the code `make -j $(nproc)`. The  `$(nproc)` part of the code identifies the number of cpus and use all of them to compile the code.
 3. From within the build directory issue `cpack` command to create installer. All the .sh, .tar.gz, and .tar.Z files are the installer in different format.
-4. Creating rpm will require an rpmbuild executable. To get rpm installed issue `sudo apt-get install rpm`
-5. Creating NSIS will require an nsis executable. In Ubuntu-10=8.04 nsis installer through .deb might be required. The installation file could be found [here](http://ftp.de.debian.org/debian/pool/main/n/nsis/nsis-common_3.08-2_all.deb). It might also require a dependency on nsis-common which can be downloaded from [here](http://ftp.de.debian.org/debian/pool/main/n/nsis/nsis-common_3.08-2_all.deb). The debian packages are searched and found on the website [here](https://debian.pkgs.org/). Installation of .deb package is done using the command `sudo dpkg -i DEB_PACKAGE_NAME`
 
 ## Changing the name of the project
 - Project name needs to be changed in two places

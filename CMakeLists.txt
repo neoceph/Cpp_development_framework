@@ -211,6 +211,7 @@ install(FILES ${PROJECT_BINARY_DIR}/doc/usermanual/documentation/latex/${User_Gu
 
 string(TIMESTAMP YEAR_MONTH "%Y_%m")
 # set(CPACK_GENERATOR "RPM;DEB;TGZ;TXZ;TZ;STGZ;NSIS;NSIS64")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")
 set(CPACK_GENERATOR "RPM;DEB;TGZ;TXZ;TZ;STGZ;NSIS64") # NSIS 3.0 and above is not available for Ubuntu 18.04
 set(CPACK_PACKAGE_NAME ${Project})
 set(CPACK_PACKAGE_RELEASE ${YEAR_MONTH})

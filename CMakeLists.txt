@@ -1,16 +1,20 @@
 cmake_minimum_required(VERSION 3.21)
 
-# Read the JSON file.
+# Read the JSON file. JSON file contains all information regarding project titles and named variables including developers.
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/CMakeSetup.json CMakeSetup_STRING)
 
+# extracting project name and devleoper names from the json file.
 string(JSON Project_NAME GET ${CMakeSetup_STRING} 0 ProjectName)
 string(JSON Project_DEVELOPER GET ${CMakeSetup_STRING} 0 Developer)
 
+# setting project and project library variable names.
 set(Project ${Project_NAME})
 set(ProjectLib ${Project}_lib)
 
+# settting the project name.
 project(${Project} C CXX)
 
+# specifying the C++ standards
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -22,6 +26,7 @@ if (OPENMP_FOUND)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
+# intializing and enabling test.
 include(CTest)
 enable_testing()
 
@@ -29,7 +34,8 @@ enable_testing()
 include_directories(
     ${ProjectLib} "${CMAKE_SOURCE_DIR}/src/headers"
     )
-# setting the directory of the source for doxygen   
+
+# setting the directory of the source for doxygen documentation
 set(PROJECT_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/src")
 
 # specifying the directory where all the sources are located.
@@ -41,7 +47,7 @@ add_subdirectory(
     test
     )
 
-# adding git submodule chekout from the source
+# adding git submodules chekout from the source
 
 # Download all the submodules
 find_package(Git QUIET)
@@ -67,14 +73,13 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/extLibs/googletest/CMakeLists.txt")
 endif()
 
 # setting up sphinx-build with readthedocs theme
-
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/usermanual)    
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/CMakeSetup.json ${CMAKE_CURRENT_BINARY_DIR}/CMakeSetup.json
     COPYONLY
     )
 
-message("Copy Sphinx setup files")
+message("Copying Sphinx setup files")
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/doc/readthedocs/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/doc/usermanual/)
 
 message("Sphinx Document generation started")
@@ -93,7 +98,7 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/usermanual
     )
 
-# setting up doxygen
+# setting up doxygen and code documenation html and pdf
 find_package(Doxygen)
 if (DOXYGEN_FOUND)
     # creating a /build/doc directory for generating doxyfile outputs in the separate build directory
@@ -133,11 +138,9 @@ if (DOXYGEN_FOUND)
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/api/latex
         )
 
-
 else (DOXYGEN_FOUND)
     message("Doxygen need to be installed to generate the doxygen documentation!")
 endif (DOXYGEN_FOUND)
-
 
 
 # adding the googletest library separately as including the subdirectory with the previous command did not work!
@@ -145,15 +148,12 @@ add_subdirectory(
     extLibs/googletest EXCLUDE_FROM_ALL
     )
 
-
 # CPack and git versioning stuffs
 
 # Appends the cmake/modules path to MAKE_MODULE_PATH variable.
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 
-#
 # Make a version file containing the current version from git.
-#
 if(EXISTS "${PROJECT_SOURCE_DIR}/versionForSourcePackage.cmake")
   include("${PROJECT_SOURCE_DIR}/versionForSourcePackage.cmake")
 else()
@@ -181,12 +181,14 @@ set(CPACK_INSTALL_COMMANDS "${CMAKE_COMMAND} -E make_directory \
     "${CMAKE_COMMAND} -E copy \
     ${PROJECT_BINARY_DIR}/versionForSourcePackage.cmake \
     ${PROJECT_BINARY_DIR}/_CPack_Packages/Linux-Source/${CPACK_SOURCE_GENERATOR}/${CPACK_SOURCE_PACKAGE_FILE_NAME}/")
+
 # Exclude the build and .git directory from the source package.
 set(CPACK_SOURCE_IGNORE_FILES "${PROJECT_SOURCE_DIR}/.git/;${PROJECT_BINARY_DIR}/;${CPACK_SOURCE_IGNORE_FILES}")
 
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/version.cpp.in
                 ${CMAKE_CURRENT_BINARY_DIR}/version.cpp)
+
 configure_file(
    ${PROJECT_SOURCE_DIR}/versionForSourcePackage.cmake.in
    ${PROJECT_BINARY_DIR}/versionForSourcePackage.cmake @ONLY)
@@ -195,12 +197,12 @@ set(version_file "${CMAKE_CURRENT_BINARY_DIR}/version.cpp")
 set(source_files "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 
 #Add the version_file to the project build.
-# add_executable(${PROJECT_NAME} ${source_files} ${version_file})
 # generating executable program by specifying the location of the file
 add_executable(${Project} src/main.cpp ${version_file})
 
 target_link_libraries(${Project} ${ProjectLib})
 
+# specifying install rules for documentation 
 string(TOLOWER ${Project_NAME} User_Guide)
 include(InstallRequiredSystemLibraries)
 install(TARGETS ${Project})
@@ -209,6 +211,7 @@ install(DIRECTORY ${PROJECT_BINARY_DIR}/doc/usermanual/documentation/html DESTIN
 install(FILES ${PROJECT_BINARY_DIR}/doc/api/latex/refman.pdf DESTINATION help/api RENAME "Api Documentation.pdf")
 install(FILES ${PROJECT_BINARY_DIR}/doc/usermanual/documentation/latex/${User_Guide}.pdf DESTINATION help/manual RENAME "User Guide.pdf")
 
+# CPACK ruls
 string(TIMESTAMP YEAR_MONTH "%Y_%m")
 # set(CPACK_GENERATOR "RPM;DEB;TGZ;TXZ;TZ;STGZ;NSIS;NSIS64")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")

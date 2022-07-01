@@ -43,7 +43,7 @@
 ## Generating documentation
 - Under the build directory after a successful build `make docs` will generate api documentation under doc/api directory
     - in the doc/api/latex/ directory issuing `make pdf` will generate pdf from the generated latex files
-- Under the doc/readthedocs directory issuing `make html` will generate html documentation under doc/readthedocs/_build/html directory
+- Under the doc/usermanual directory issuing `make html` will generate html documentation under doc/readthedocs/_build/html directory
 - `make latexpdf` will generate pdf documentation under doc/readthedocs/_build/latex directory
 
     

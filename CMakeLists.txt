@@ -7,9 +7,40 @@ file(READ ${CMAKE_CURRENT_SOURCE_DIR}/CMakeSetup.json CMakeSetup_STRING)
 string(JSON Project_NAME GET ${CMakeSetup_STRING} 0 ProjectName)
 string(JSON Project_DEVELOPER GET ${CMakeSetup_STRING} 0 Developer)
 
+# CPack and git versioning stuffs
+
+# Appends the cmake/modules path to MAKE_MODULE_PATH variable.
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
+
+# Building a static library would require uncommenting the following two variable setting.
+# set(BUILD_SHARED_LIBS OFF)
+# set(CMAKE_EXE_LINKER_FLAGS "-static")
+
+
+# use, i.e. don't skip the full RPATH for the build tree
+SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
+
+# Make a version file containing the current version from git.
+if(EXISTS "${PROJECT_SOURCE_DIR}/versionForSourcePackage.cmake")
+  include("${PROJECT_SOURCE_DIR}/versionForSourcePackage.cmake")
+else()
+  include(GetGitRevisionDescription)
+  git_describe(VERSION --tags --dirty=-dirty)
+endif()
+
+#parse the version information into pieces.
+string(REGEX REPLACE "^v([0-9]+)\\..*" "\\1" VERSION_MAJOR "${VERSION}")
+string(REGEX REPLACE "^v[0-9]+\\.([0-9]+).*" "\\1" VERSION_MINOR "${VERSION}")
+string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" VERSION_PATCH "${VERSION}")
+string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.[0-9]+(.*)" "\\1" VERSION_SHA1 "${VERSION}")
+set(VERSION_SHORT "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+
+
 # setting project and project library variable names.
 set(Project ${Project_NAME})
 set(ProjectLib ${Project}_lib)
+
+set(CMAKE_INSTALL_PREFIX "/${Project_NAME}_${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 # settting the project name.
 project(${Project} C CXX)
@@ -148,26 +179,6 @@ add_subdirectory(
     extLibs/googletest EXCLUDE_FROM_ALL
     )
 
-# CPack and git versioning stuffs
-
-# Appends the cmake/modules path to MAKE_MODULE_PATH variable.
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
-
-# Make a version file containing the current version from git.
-if(EXISTS "${PROJECT_SOURCE_DIR}/versionForSourcePackage.cmake")
-  include("${PROJECT_SOURCE_DIR}/versionForSourcePackage.cmake")
-else()
-  include(GetGitRevisionDescription)
-  git_describe(VERSION --tags --dirty=-dirty)
-endif()
-
-#parse the version information into pieces.
-string(REGEX REPLACE "^v([0-9]+)\\..*" "\\1" VERSION_MAJOR "${VERSION}")
-string(REGEX REPLACE "^v[0-9]+\\.([0-9]+).*" "\\1" VERSION_MINOR "${VERSION}")
-string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" VERSION_PATCH "${VERSION}")
-string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.[0-9]+(.*)" "\\1" VERSION_SHA1 "${VERSION}")
-set(VERSION_SHORT "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
-
 set(CPACK_SOURCE_GENERATOR "TGZ")
 set(CPACK_PACKAGE_VERSION_MAJOR "${VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${VERSION_MINOR}")
@@ -176,11 +187,11 @@ set(CPACK_PACKAGE_VERSION_PATCH "${VERSION_PATCH}")
 # The following will transfer the version from git to the source package.
 set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}-${VERSION_SHORT}-Source")
 
-set(CPACK_INSTALL_COMMANDS "${CMAKE_COMMAND} -E make_directory \
-    ${PROJECT_BINARY_DIR}/_CPack_Packages/Linux-Source/${CPACK_SOURCE_GENERATOR}/${CPACK_SOURCE_PACKAGE_FILE_NAME}/"
-    "${CMAKE_COMMAND} -E copy \
-    ${PROJECT_BINARY_DIR}/versionForSourcePackage.cmake \
-    ${PROJECT_BINARY_DIR}/_CPack_Packages/Linux-Source/${CPACK_SOURCE_GENERATOR}/${CPACK_SOURCE_PACKAGE_FILE_NAME}/")
+# set(CPACK_INSTALL_COMMANDS "${CMAKE_COMMAND} -E make_directory \
+#     ${PROJECT_BINARY_DIR}/_CPack_Packages/Linux-Source/${CPACK_SOURCE_GENERATOR}/${CPACK_SOURCE_PACKAGE_FILE_NAME}/"
+#     "${CMAKE_COMMAND} -E copy \
+#     ${PROJECT_BINARY_DIR}/versionForSourcePackage.cmake \
+#     ${PROJECT_BINARY_DIR}/_CPack_Packages/Linux-Source/${CPACK_SOURCE_GENERATOR}/${CPACK_SOURCE_PACKAGE_FILE_NAME}/")
 
 # Exclude the build and .git directory from the source package.
 set(CPACK_SOURCE_IGNORE_FILES "${PROJECT_SOURCE_DIR}/.git/;${PROJECT_BINARY_DIR}/;${CPACK_SOURCE_IGNORE_FILES}")
@@ -199,13 +210,34 @@ set(source_files "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 #Add the version_file to the project build.
 # generating executable program by specifying the location of the file
 add_executable(${Project} src/main.cpp ${version_file})
+set_target_properties(${Project} PROPERTIES LINK_FLAGS "-Wl,-rpath,./")
 
-target_link_libraries(${Project} ${ProjectLib})
+target_link_libraries(${Project} ${ProjectLib} -static-libgcc -static-libstdc++)
+
+
+# when building, don't use the install RPATH already
+# (but later on when installing)
+SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE) 
+
+# specifying install rules for dependency libraries
+# target_link_libraries(${Project} -static-libgcc -static-libstdc++)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/dependencies/lib DESTINATION .)
+#set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+
+# don't add the automatically determined parts of the RPATH
+# which point to directories outside the build tree to the install RPATH
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
+
 
 # specifying install rules for documentation 
 string(TOLOWER ${Project_NAME} User_Guide)
 include(InstallRequiredSystemLibraries)
-install(TARGETS ${Project})
+install(
+    TARGETS ${Project}
+    RUNTIME DESTINATION bin
+    )
+SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--enable-new-dtags")
 install(DIRECTORY ${PROJECT_BINARY_DIR}/doc/api/html DESTINATION help/api)
 install(DIRECTORY ${PROJECT_BINARY_DIR}/doc/usermanual/documentation/html DESTINATION help/manual)
 install(FILES ${PROJECT_BINARY_DIR}/doc/api/latex/refman.pdf DESTINATION help/api RENAME "Api Documentation.pdf")
@@ -213,9 +245,9 @@ install(FILES ${PROJECT_BINARY_DIR}/doc/usermanual/documentation/latex/${User_Gu
 
 # CPACK ruls
 string(TIMESTAMP YEAR_MONTH "%Y_%m")
-# set(CPACK_GENERATOR "RPM;DEB;TGZ;TXZ;TZ;STGZ;NSIS;NSIS64")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")
-set(CPACK_GENERATOR "RPM;DEB;TGZ;TXZ;TZ;STGZ;NSIS64") # NSIS 3.0 and above is not available for Ubuntu 18.04
+# set(CPACK_GENERATOR "RPM;DEB;TGZ;TXZ;TZ;STGZ;NSIS;NSIS64") # NSIS 3.0 and above is not available for Ubuntu 18.04
+set(CPACK_GENERATOR "STGZ")
 set(CPACK_PACKAGE_NAME ${Project})
 set(CPACK_PACKAGE_RELEASE ${YEAR_MONTH})
 set(CPACK_PACKAGE_CONTACT ${Project_DEVELOPER})

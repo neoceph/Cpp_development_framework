@@ -7,6 +7,26 @@ file(READ ${CMAKE_CURRENT_SOURCE_DIR}/CMakeSetup.json CMakeSetup_STRING)
 string(JSON Project_NAME GET ${CMakeSetup_STRING} 0 ProjectName)
 string(JSON Project_DEVELOPER GET ${CMakeSetup_STRING} 0 Developer)
 
+# CPack and git versioning stuffs
+
+# Appends the cmake/modules path to MAKE_MODULE_PATH variable.
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
+
+# Make a version file containing the current version from git.
+if(EXISTS "${PROJECT_SOURCE_DIR}/versionForSourcePackage.cmake")
+  include("${PROJECT_SOURCE_DIR}/versionForSourcePackage.cmake")
+else()
+  include(GetGitRevisionDescription)
+  git_describe(VERSION --tags --dirty=-dirty)
+endif()
+
+#parse the version information into pieces.
+string(REGEX REPLACE "^v([0-9]+)\\..*" "\\1" VERSION_MAJOR "${VERSION}")
+string(REGEX REPLACE "^v[0-9]+\\.([0-9]+).*" "\\1" VERSION_MINOR "${VERSION}")
+string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" VERSION_PATCH "${VERSION}")
+string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.[0-9]+(.*)" "\\1" VERSION_SHA1 "${VERSION}")
+set(VERSION_SHORT "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+
 # setting project and project library variable names.
 set(Project ${Project_NAME})
 set(ProjectLib ${Project}_lib)
@@ -147,26 +167,6 @@ endif (DOXYGEN_FOUND)
 add_subdirectory(
     extLibs/googletest EXCLUDE_FROM_ALL
     )
-
-# CPack and git versioning stuffs
-
-# Appends the cmake/modules path to MAKE_MODULE_PATH variable.
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
-
-# Make a version file containing the current version from git.
-if(EXISTS "${PROJECT_SOURCE_DIR}/versionForSourcePackage.cmake")
-  include("${PROJECT_SOURCE_DIR}/versionForSourcePackage.cmake")
-else()
-  include(GetGitRevisionDescription)
-  git_describe(VERSION --tags --dirty=-dirty)
-endif()
-
-#parse the version information into pieces.
-string(REGEX REPLACE "^v([0-9]+)\\..*" "\\1" VERSION_MAJOR "${VERSION}")
-string(REGEX REPLACE "^v[0-9]+\\.([0-9]+).*" "\\1" VERSION_MINOR "${VERSION}")
-string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" VERSION_PATCH "${VERSION}")
-string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.[0-9]+(.*)" "\\1" VERSION_SHA1 "${VERSION}")
-set(VERSION_SHORT "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 set(CPACK_SOURCE_GENERATOR "TGZ")
 set(CPACK_PACKAGE_VERSION_MAJOR "${VERSION_MAJOR}")

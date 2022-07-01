@@ -18,7 +18,7 @@ from datetime import datetime
 
 
 # -- Project information -----------------------------------------------------
-
+master_doc = 'index'
 with open("../../CMakeSetup.json", "r") as jsonfile:
     data = json.load(jsonfile)
 

@@ -205,7 +205,9 @@ target_link_libraries(${Project} ${ProjectLib})
 # specifying install rules for documentation 
 string(TOLOWER ${Project_NAME} User_Guide)
 include(InstallRequiredSystemLibraries)
-install(TARGETS ${Project})
+install(
+    TARGETS ${Project}
+    )
 install(DIRECTORY ${PROJECT_BINARY_DIR}/doc/api/html DESTINATION help/api)
 install(DIRECTORY ${PROJECT_BINARY_DIR}/doc/usermanual/documentation/html DESTINATION help/manual)
 install(FILES ${PROJECT_BINARY_DIR}/doc/api/latex/refman.pdf DESTINATION help/api RENAME "Api Documentation.pdf")

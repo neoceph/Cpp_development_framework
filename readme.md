@@ -17,6 +17,7 @@
     - `pip3 install sphinx-sitemap`
 - Latexmk (required for pdf generation)
     - If not available can be installed with `sudo apt-get update -y` and next `sudo apt-get install -y latexmk`
+    - If object inheritance is used, epstopdf might be required. In such cases texlive-font-utils are required which can be installed using `sudo apt-get install texlive-font-utils`
     - For .sty file not found use `apt install texlive-latex-extra`
 - Rpmbuild (required for .rpm package generation) 
     - Creating rpm will require an rpmbuild executable. To get rpm installed issue `sudo apt-get install rpm`

@@ -8,6 +8,20 @@
 - Doxygen 1.9.4 and above
     -`sudo apt update` 
     - `sudo apt install doxygen`
+- GraphViz required if class UML diagram generation is desired
+    - `sudo apt install graphviz`
+    - Settings on the Doxyfile that needs to changes are 
+        - HIDE_UNDOC_RELATIONS = NO #YES
+        - HAVE_DOT = YES #NO
+        - UML_LOOK = YES #NO
+        - UML_LIMIT_NUM_FIELDS = 50 #10
+        - TEMPLATE_RELATIONS = YES #NO
+        - CALL_GRAPH = YES #NO
+        - CALLER_GRAPH = YES #NO
+        - DOT_IMAGE_FORMAT = svg #png
+        - INTERACTIVE_SVG = YES #NO
+        - DOT_GRAPH_MAX_NODES = 100 #50
+        - DOT_TRANSPARENT = YES #NO
 - Sphinx 4.4.0 and above
     `sudo apt-get install python3-sphinx`
 - Sphinx readthedocs theme

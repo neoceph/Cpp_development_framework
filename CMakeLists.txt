@@ -81,25 +81,39 @@ add_subdirectory(
 # adding git submodules chekout from the source
 
 # Download all the submodules
-find_package(Git QUIET)
+find_package(Git REQUIRED)
+# if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
 if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+message(STATUS "Git and directory Found!")
 # update submodules as needed
-    option(GIT_SBUMODULE "Check submodules during build" ON)
+    option(GIT_SUBMODULE "Check submodules during build" ON)
+    # if(GIT_SUBMODULE)
     if(GIT_SUBMODULE)
-        message(STSTUS "Submodule update")
-        execute_process(
-            COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            RESULT_VARIABLE GIT_SUBMOD_RESULT
-            )
+    # if(GIT_FOUND)
+        message(STATUS "Submodule update")
+        # execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive)
+        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+                        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                        RESULT_VARIABLE GIT_SUBMOD_RESULT)
+        # execute_process(
+        #     COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+        #     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        #     RESULT_VARIABLE GIT_SUBMOD_RESULT
+        #     )
+        # if(NOT GIT_SUBMOD_RESULT EQUAL "0")
+        #     message(FATAL_ERROR "git submodule update --init failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+        # endif()
         if(NOT GIT_SUBMOD_RESULT EQUAL "0")
-            message(FATAL_ERROR "git submodule update --init failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+            message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
         endif()
     endif()
 endif()
 
 # check all the submodules
-if(NOT EXISTS "${PROJECT_SOURCE_DIR}/extLibs/googletest/CMakeLists.txt")
+if(
+    NOT EXISTS "${PROJECT_SOURCE_DIR}/extLibs/VTK/CMakeLists.txt"
+    AND NOT EXISTS "${PROJECT_SOURCE_DIR}/extLibs/VTK/CMakeLists.txt"
+    )
     message(FATAL_ERROR "The googletest submodules was not downloaded! GIT_SUBMODULE is either turned off or failed. Please update submodules")
 endif()
 

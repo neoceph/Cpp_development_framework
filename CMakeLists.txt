@@ -6,6 +6,7 @@ file(READ ${CMAKE_CURRENT_SOURCE_DIR}/CMakeSetup.json CMakeSetup_STRING)
 # extracting project name and devleoper names from the json file.
 string(JSON Project_NAME GET ${CMakeSetup_STRING} 0 ProjectName)
 string(JSON Project_DEVELOPER GET ${CMakeSetup_STRING} 0 Developer)
+string(JSON Document_Generation GET ${CMakeSetup_STRING} 0 DocumentGeneration)
 
 # CPack and git versioning stuffs
 
@@ -50,7 +51,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # check if openMP compilers are available and link them
-find_package(OpenMP 4.0 REQUIRED)
+find_package(OpenMP 4.0)
 if (OPENMP_FOUND)
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
@@ -102,6 +103,7 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/extLibs/googletest/CMakeLists.txt")
     message(FATAL_ERROR "The googletest submodules was not downloaded! GIT_SUBMODULE is either turned off or failed. Please update submodules")
 endif()
 
+if (${Document_Generation})
 # setting up sphinx-build with readthedocs theme
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/usermanual)    
 configure_file(
@@ -171,6 +173,7 @@ if (DOXYGEN_FOUND)
 else (DOXYGEN_FOUND)
     message("Doxygen need to be installed to generate the doxygen documentation!")
 endif (DOXYGEN_FOUND)
+endif(${Document_Generation})
 
 
 # adding the googletest library separately as including the subdirectory with the previous command did not work!

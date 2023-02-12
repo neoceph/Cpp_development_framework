@@ -41,7 +41,7 @@
 1. Assigning a git tag is easy 
     - `git tag -a v1.0.3 -m 'Version 1.0.3 - Feature 1'`
     - `git tag` lists all the available tags.
-    - Check other `git tag` details [here].(https://git-scm.com/book/en/v2/Git-Basics-Tagging)
+    - Check other `git tag` details [here](https://git-scm.com/book/en/v2/Git-Basics-Tagging).
 2. Build the code 
     - create a directory named 'build' with `mkdir build`
     - change to build directory with `cd build`
@@ -62,6 +62,6 @@
 - `make latexpdf` will generate pdf documentation under doc/readthedocs/_build/latex directory
 
 ## Example read the docs documentation
-- Example readthedocs documentation is hosted [here].(https://cpp-development-framework.readthedocs.io/en/latest/)
+- Example readthedocs documentation is hosted [here](https://cpp-development-framework.readthedocs.io/en/latest/).
 
     

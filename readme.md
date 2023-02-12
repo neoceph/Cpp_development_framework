@@ -62,6 +62,6 @@
 - `make latexpdf` will generate pdf documentation under doc/readthedocs/_build/latex directory
 
 ## Example read the docs documentation
-- Example read the docs documentation is hosted [here]. (https://cpp-development-framework.readthedocs.io/en/latest/)
+- Example readthedocs documentation is hosted [here].(https://cpp-development-framework.readthedocs.io/en/latest/)
 
     

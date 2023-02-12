@@ -61,4 +61,7 @@
 - Under the doc/usermanual directory issuing `make html` will generate html documentation under doc/readthedocs/_build/html directory
 - `make latexpdf` will generate pdf documentation under doc/readthedocs/_build/latex directory
 
+## Example read the docs documentation
+- Example read the docs documentation is hosted [here]. (https://cpp-development-framework.readthedocs.io/en/latest/)
+
     

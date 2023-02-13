@@ -5,8 +5,9 @@
 
 Welcome to |projectName|'s documentation!
 ==========================================
-|projectName| is a finite volume based laser powder based fusion computational analysis tool. In the current version |projectName|
-is solving Navier-Stokes equation and Energy equation to calculate the temperature distribution, solid fraction, melt pool etc for a given spot and scan laser.
+|projectName| is a C++ development framework that aims to streamline the other details of building executable, versioning, packaging the program with all the necessary libraries. 
+The primary objective is to allow the scientist, researcher, engineering or developer focus entirely on writing the code and worry less about environment setup.
+In the current version |projectName| also provides versioning of the program from the git tags. 
 
 .. toctree::
    :maxdepth: 2
@@ -21,4 +22,4 @@ Getting Started
 * :ref:`modindex`
 * :ref:`search`
 
-.. |projectName| replace:: AM-CFD
+.. |projectName| replace:: C++ Development Framework

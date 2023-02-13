@@ -1,11 +1,11 @@
-.. AM-CFD documentation master file, created by
+|projectName| documentation master file, created by
    sphinx-quickstart on Sun Mar 13 03:15:09 2022.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to AM-CFD's documentation!
-==================================
-AM-CFD is a finite volume based laser powder based fusion computational analysis tool. In the current version AM-CFD
+Welcome to |projectName|'s documentation!
+==========================================
+|projectName| is a finite volume based laser powder based fusion computational analysis tool. In the current version |projectName|
 is solving Navier-Stokes equation and Energy equation to calculate the temperature distribution, solid fraction, melt pool etc for a given spot and scan laser.
 
 .. toctree::
@@ -20,3 +20,5 @@ Getting Started
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. |projectName| replace:: AM-CFD

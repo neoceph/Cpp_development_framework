@@ -72,5 +72,6 @@
       "typeinfo": "cpp",
       "variant": "cpp",
       "bit": "cpp"
-    }
+    },
+    "esbonio.sphinx.confDir": ""
 }
